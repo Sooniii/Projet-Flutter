@@ -15,3 +15,4 @@ class User{
   User(this.username, this.password, this.image, this.email, this.role,
       this.horses, this.phone, this.age, this.ffeProfile);
 }
+
