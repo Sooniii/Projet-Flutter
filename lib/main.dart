@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/EditProfile.dart';
 import 'HomePage.dart';
 import 'db/mongo_dart.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const MyHomePage(title: 'Ride me'),
+      home: const Editprofile(title: 'Ride me'),
     );
   }
 }
