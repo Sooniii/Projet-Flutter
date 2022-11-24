@@ -1,9 +1,7 @@
 import 'dart:developer';
-
-import 'package:projet_flutter/MongoDBModel.dart';
-
 import '../class/Riders.dart';
 import '../class/User.dart';
+import '../class/Horse.dart';
 import 'constant.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -26,6 +24,15 @@ class MongoDatabase{
       var response = await riderCollection.save(result);
       inspect(response);
     }
+    //Fonctionne pas
+    static Future<void> updateHorse(Horse data) async{
+      var result = await horseCollection.findOne({"_id": data.id});
+      var response = await horseCollection.save(result);
+      inspect(response);
+    }
+
+    
+    
     static Future<List<Map<String,dynamic>>> getDataRider() async{
       final arrData = await riderCollection.find().toList();
       return arrData;
@@ -35,9 +42,10 @@ class MongoDatabase{
       return arrData;
     }
     static Future<List<Map<String,dynamic>>> getQueryData() async{
-      final arrData = await riderCollection
+      var arrData = await riderCollection
           .find(where.eq("_id", ObjectId.fromHexString("637f52eb44a0488cf0971717")))
           .toList();
+
       return arrData;
     }
     // User user = User("admin", "admin", "logo.png", "admin@admin.fr", 0, [], "", null, "");

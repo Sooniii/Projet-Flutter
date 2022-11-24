@@ -38,7 +38,7 @@ class Horse{
   );
 
   Map<String, dynamic> toJson() => {
-    "_id": id.toJson(),
+    "_id": id,
     "image": image,
     "name": name,
     "age": age,

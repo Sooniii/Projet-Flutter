@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:mongo_dart/mongo_dart.dart';
 
-
 class Riders {
   Riders({
     required this.id,
@@ -58,5 +57,6 @@ class Riders {
     "isDp": List<String>.from(isDp.map((x) => x)),
     "isOwner": List<String>.from(isOwner.map((x) => x)),
   };
+
 }
 

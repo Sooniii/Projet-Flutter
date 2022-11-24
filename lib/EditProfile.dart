@@ -28,7 +28,7 @@ class _EditprofileState extends State<Editprofile> {
   final genderHorseController = TextEditingController();
   final colorHorseController = TextEditingController();
 
-
+// Formulaire d'edition du profile utilisateur
   void dialogEditProfile(Riders data){
     showDialog<String>(
       context: context,
@@ -97,11 +97,13 @@ class _EditprofileState extends State<Editprofile> {
       ),
     );
   }
+
+  // Dialog contenant la liste de tout les chevaux de la base
   void dialogListCheval(){
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text("Edition du cheval"),
+        title: const Text("List des chevaux"),
         content:  Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -110,7 +112,7 @@ class _EditprofileState extends State<Editprofile> {
                   future: MongoDatabase.getDataHorse(),
                   builder: (context, AsyncSnapshot snapshot){
                     if (snapshot.connectionState == ConnectionState.waiting){
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else {
@@ -119,17 +121,17 @@ class _EditprofileState extends State<Editprofile> {
                         print("Tatal Data$totalData");
                         return GridView.builder(
                             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 220,
+                            maxCrossAxisExtent: 420,
                             childAspectRatio: 3/2,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 20),
                             itemCount:  snapshot.data.length,
                             itemBuilder: (context, index) {
-                                  return CardHorse( snapshot.data[index]);
+                                  return CardHorse(Horse.fromJson(snapshot.data[index]));
                             },
                         );
                       } else {
-                        return Center(
+                        return const Center(
                           child: Text('No Data Available'),
                         );
                       }
@@ -142,12 +144,14 @@ class _EditprofileState extends State<Editprofile> {
             onPressed: () {
               Navigator.pop(context, 'Cancel');
             },
-            child: const Text('Envoyer'),
+              child: const Text('Close'),
           ),
         ],
       ),
     );
   }
+
+  // Formulaire d'edition du profile d'un cheval (pas utilisable car incapable de récuperer les chevaux de l'utilisateur)
   void dialogEditCheval(Horse data){
     showDialog<String>(
       context: context,
@@ -215,136 +219,124 @@ class _EditprofileState extends State<Editprofile> {
       ),
     );
   }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: SafeArea(
-        child: FutureBuilder(
-            future: MongoDatabase.getQueryData(),
-            builder: (context, AsyncSnapshot snapshot){
-              if (snapshot.connectionState == ConnectionState.waiting){
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                  if(snapshot.hasData){
-                    var totalData = snapshot.data.length;
-                    print("Tatal Data$totalData");
-                    return miseEnPage(Riders.fromJson(snapshot.data[0]));
-
-                  } else {
-                    return Center(
-                      child: Text('No Data Available'),
-                    );
-                  }
-                }
-              }
-        ))
-      );
-  }
+  // Créeation de cartes pour les chevaux
   Widget CardHorse(Horse data){
-    return Card(
-      elevation: 10,
-      color: Colors.brown,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget> [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children:  <Widget> [
-              const Icon(
-                Icons.pets,
-                size: 24.0,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
-              Text(data.name)
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children:  <Widget> [
-              Text(data.owner),
-              Text(data.sexe),
-              Text("${data.age}")
-            ]
-          )
-        ],
-      ),
-    );
-  }
-  Widget miseEnPage (Riders data){
-
-      return
-
-        ListView(
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(left: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 80, top: 15),
-                  child:
+    return GestureDetector(
+        onTap: () => print(""),//_updateOwner(data.id, data.name, data.image, data.color, data.age, data.race, data.sexe, data.speciality, data.owner),
+        child:
+        Card(
+          elevation: 10,
+          color: Colors.brown,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget> [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:  <Widget> [
                   Container(
+                    width: 80,
+                    height: 80,
                     decoration: const BoxDecoration(
-                      color: Colors.brown,
                       shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage('assets/cheval.jpeg'),
+                          fit: BoxFit.fill
+                      ),
                     ),
-                    child: IconButton(
-                      icon: const Icon(
-                          Icons.edit, size: 20),
-                      onPressed: () {
-                        nameController.text = data.username;
-                        ageController.text = "${data.age}";
-                        emailController.text = data.email;
-                        phoneController.text = data.phone;
-                        ffelinkController.text = data.ffeProfile;
-                        dialogEditProfile(data);
-                      },
-                    ),
-                  )
-              ),
-              Center(
-                  child: Container(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      height: 150,
-                      width: 150,
-                      child: ClipOval(
-                        child: Image.network(
-                            "https://images.unsplash.com/photo-1669178082499-341906b2ab28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDN8dG93SlpGc2twR2d8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"),
-                      )
-                  )
-              ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(padding: EdgeInsets.all(20),
-                          child: Text("Nom : " "${data.username}")),
-                      Padding(padding: EdgeInsets.all(20),
-                          child: Text("Age : " "${data.age}"))
-
-
-                    ],
                   ),
-                  Padding(padding: EdgeInsets.all(20),
-                      child: Text("Email : " "${data.email}")),
-                  Padding(padding: EdgeInsets.all(20),
-                      child: Text("Phone : " "${data.phone}")),
-                  Padding(padding: EdgeInsets.all(20),
-                      child: Text("Role : " "${data.role}")),
-                  Padding(padding: EdgeInsets.all(20),
-                      child: Text("FFE Link : " "${data.ffeProfile}"))
-
+                  Padding(padding: const EdgeInsets.only(right: 30, bottom: 20), child: Text(data.name),)
 
                 ],
               ),
-              Row(
+              Padding(padding: const EdgeInsets.only(top: 20),child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children:  <Widget> [
+                    Text("${data.age}"),
+                    Text(data.sexe),
+                    Text(data.race)
+                  ]
+              )
+              )
+            ],
+          ),
+        )
+    );
+  }
+//retourne le role de user sous forme textuel
+  Widget GetRole (int role){
+    if(role == 0){
+      return Text("Role : Administrateur");
+    }else{
+      return Text("Role : Cavalier");
+    }
+  }
+  // Mise en page des données utilisateur sur la page
+  Widget miseEnPage (Riders data){
+    return
+      ListView(
+          children: [
+            Padding(
+                padding: EdgeInsets.only(left: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 80, top: 15),
+                child:
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.brown,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                        Icons.edit, size: 20),
+                    onPressed: () {
+                      nameController.text = data.username;
+                      ageController.text = "${data.age}";
+                      emailController.text = data.email;
+                      phoneController.text = data.phone;
+                      ffelinkController.text = data.ffeProfile;
+                      dialogEditProfile(data);
+                    },
+                  ),
+                )
+            ),
+            Center(
+                child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage("https://images.unsplash.com/photo-1669178082499-341906b2ab28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDN8dG93SlpGc2twR2d8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"),
+                     fit: BoxFit.fill
+                    ),
+                  ),
+                ),
+            ),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(padding: const EdgeInsets.all(20),
+                        child: Text("Nom : " "${data.username}")),
+                    Padding(padding: const EdgeInsets.all(20),
+                        child: Text("Age : " "${data.age}"))
+                  ],
+                ),
+                Padding(padding: const EdgeInsets.all(20),
+                    child: Text("Email : " "${data.email}")),
+                Padding(padding: const EdgeInsets.all(20),
+                    child: Text("Phone : " "${data.phone}")),
+                Padding(padding: const EdgeInsets.all(20),
+                    child: GetRole(data.role)),
+                Padding(padding: const EdgeInsets.all(20),
+                    child: Text("FFE Link : " "${data.ffeProfile}"))
+              ],
+            ),
+            Row(
                 children: [
-                  Padding(padding: EdgeInsets.all(10),
+                  const Padding(padding: EdgeInsets.all(10),
                       child: Text("Liste des Chevaux" , style: TextStyle(fontSize: 20))),
                   Padding(
                       padding: EdgeInsets.only(left: MediaQuery
@@ -367,12 +359,50 @@ class _EditprofileState extends State<Editprofile> {
                       )
                   )
                 ]
-              )
-            ]
-        );
+            )
+          ]
+      );
   }
+  //Sert a update le profile utilisateur
   Future<void> _updateData(var id, String password,String image,String username,int age,String phone,String email, String ffeProfile,int role,List<String> isDp, List<String> isOwner) async{
     final updateData = Riders(id: id, username: username, password: password, image: image, email: email, role: role, phone: phone, age: age, ffeProfile: ffeProfile, isDp : isDp, isOwner : isOwner);
     await MongoDatabase.update(updateData);
   }
+
+  // Sert a update le proprietaire d'un cheval (marche pas)
+  Future<void> _updateOwner(var id, String name,String image,String color,int age,String race,String sexe,List<String> speciality, var owner) async{
+    final updateData = Horse(id: id, image: image, name: name, age: age, color: color, race: race, sexe: sexe, owner: owner, speciality: speciality);
+    await MongoDatabase.updateHorse(updateData);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SafeArea(
+        child: FutureBuilder(
+            future: MongoDatabase.getQueryData(),
+            builder: (context, AsyncSnapshot snapshot){
+              if (snapshot.connectionState == ConnectionState.waiting){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                  if(snapshot.hasData){
+                    var totalData = snapshot.data.length;
+                    print("Tatal Data$totalData");
+                    return miseEnPage(Riders.fromJson(snapshot.data[0]));
+
+                  } else {
+                    return const Center(
+                      child: Text('No Data Available'),
+                    );
+                  }
+                }
+              }
+        ))
+      );
+  }
+
 }
