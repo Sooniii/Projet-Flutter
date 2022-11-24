@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/class/lessons.dart';
 import 'view/login.dart';
 
 import 'package:projet_flutter/view/news_page.dart';
@@ -6,7 +7,9 @@ import 'package:projet_flutter/view/register.dart';
 import 'view/login.dart';
 import 'view/register.dart';
 import 'view/news_page.dart';
+
 import 'db/mongo_dart.dart';
+import 'lesson.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

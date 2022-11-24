@@ -33,6 +33,20 @@ class MongoDatabase{
 
   }
 
+  static insertRidingLessons(data) async {
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    print("db");
+    print(db);
+    var collection = db.collection(COLLECTION_NAME_RIDING_LESSONS);
+    print("collection");
+    print(collection);
+    var result = await collection.insertOne(data);
+    print("test");
+    print (result);
+
+  }
+
   static getNews() async {
 
     newsCollection = db.collection("news");
@@ -62,7 +76,6 @@ class MongoDatabase{
     // print(await userCollection.find().toList());
 
   static getUser(String name) async {
-
     var user = await userCollection.findOne(where.eq("username", name));
     return user;
   }
