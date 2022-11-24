@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as M;
 import 'package:projet_flutter/class/User.dart';
-import 'db/mongo_dart.dart';
+import '../db/mongo_dart.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key, required String title}) : super(key: key);

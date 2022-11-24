@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'view/login.dart';
 
-import 'package:projet_flutter/news_page.dart';
-import 'package:projet_flutter/register.dart';
-import 'HomePage.dart';
+import 'package:projet_flutter/view/news_page.dart';
+import 'package:projet_flutter/view/register.dart';
+import 'view/login.dart';
 import 'db/mongo_dart.dart';
 
 Future<void> main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const Register(title: 'Ride me'),
+      home: const Login (title: 'Ride me'),
     );
   }
 }

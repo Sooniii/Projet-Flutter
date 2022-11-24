@@ -1,17 +1,20 @@
 import 'dart:developer';
 import 'package:projet_flutter/class/News.dart';
 
-import '../class/User.dart';
-import 'constant.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+import '../class/User.dart';
+import 'constant.dart';
+
+var db, userCollection, newsCollection;
+
 class MongoDatabase{
-  static var db, newsCollection;
   static connect() async {
     db = await Db.create(MONGO_URL);
     await db.open();
+    userCollection = db.collection(COLLECTION_NAME);
     inspect(db);
-    var collection = db.collection(COLLECTION_NAME);
+
     var status = db.serverStatus();
     print(status);
   }
@@ -43,18 +46,29 @@ class MongoDatabase{
     return maListe;
   }
 
-// User user = User("admin", "admin", "logo.png", "admin@admin.fr", 0, [], "", null, "");
-// var userCollection = db.collection(COLLECTION_NAME);
-// userCollection.insertOne({
-//   "username": user.username,
-//   "password": user.password,
-//   "image": user.image,
-//   "email": user.email,
-//   "role": user.role,
-//   "horses": user.horses,
-//   "phone": user.phone,
-//   "age": user.age,
-//   "ffeProfile": user.ffeProfile
-// });
-// print(await userCollection.find().toList());
+    // User user = User("admin", "admin", "logo.png", "admin@admin.fr", 0, [], "", null, "");
+    // var userCollection = db.collection(COLLECTION_NAME);
+    // userCollection.insertOne({
+    //   "username": user.username,
+    //   "password": user.password,
+    //   "image": user.image,
+    //   "email": user.email,
+    //   "role": user.role,
+    //   "horses": user.horses,
+    //   "phone": user.phone,
+    //   "age": user.age,
+    //   "ffeProfile": user.ffeProfile
+    // });
+    // print(await userCollection.find().toList());
+
+  static getUser(String name) async {
+
+    var user = await userCollection.findOne(where.eq("username", name));
+    return user;
+  }
+
+  static updatePassword(String name, String password) async {
+
+    await userCollection.update(where.eq('username', name), modify.set("password", password));
+  }
 }
