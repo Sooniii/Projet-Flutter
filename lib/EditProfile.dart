@@ -1,6 +1,11 @@
 
+
+
 import 'package:flutter/material.dart';
-import 'package:projet_flutter/MongoDBModel.dart';
+
+
+import 'package:projet_flutter/class/Horse.dart';
+import 'package:projet_flutter/class/Riders.dart';
 import 'package:projet_flutter/db/mongo_dart.dart';
 
 class Editprofile extends StatefulWidget {
@@ -24,7 +29,7 @@ class _EditprofileState extends State<Editprofile> {
   final colorHorseController = TextEditingController();
 
 
-  void dialogEditProfile(MongoDbModel data){
+  void dialogEditProfile(Riders data){
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -81,7 +86,7 @@ class _EditprofileState extends State<Editprofile> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              _updateData(data.id, data.password, data.image, nameController.text, int.parse(ageController.text), phoneController.text, emailController.text, ffelinkController.text, data.role, data.horses);
+              _updateData(data.id, data.password, data.image, nameController.text, int.parse(ageController.text), phoneController.text, emailController.text, ffelinkController.text, data.role,data.isDp,data.isOwner).then((_) => setState(() {}));
               Navigator.pop(context, 'Cancel');
             },
             child: const Text('Envoyer'),
@@ -92,7 +97,58 @@ class _EditprofileState extends State<Editprofile> {
       ),
     );
   }
-  void dialogEditCheval(MongoDbModel data){
+  void dialogListCheval(){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Edition du cheval"),
+        content:  Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: SafeArea(
+              child: FutureBuilder(
+                  future: MongoDatabase.getDataHorse(),
+                  builder: (context, AsyncSnapshot snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if(snapshot.hasData){
+                        var totalData = snapshot.data.length;
+                        print("Tatal Data$totalData");
+                        return GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 220,
+                            childAspectRatio: 3/2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 20),
+                            itemCount:  snapshot.data.length,
+                            itemBuilder: (context, index) {
+                                  return CardHorse( snapshot.data[index]);
+                            },
+                        );
+                      } else {
+                        return Center(
+                          child: Text('No Data Available'),
+                        );
+                      }
+                    }
+                  }
+              )),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+            child: const Text('Envoyer'),
+          ),
+        ],
+      ),
+    );
+  }
+  void dialogEditCheval(Horse data){
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -177,7 +233,7 @@ class _EditprofileState extends State<Editprofile> {
                   if(snapshot.hasData){
                     var totalData = snapshot.data.length;
                     print("Tatal Data$totalData");
-                    return miseEnPage(MongoDbModel.fromJson(snapshot.data[0]));
+                    return miseEnPage(Riders.fromJson(snapshot.data[0]));
 
                   } else {
                     return Center(
@@ -189,16 +245,37 @@ class _EditprofileState extends State<Editprofile> {
         ))
       );
   }
-  Widget Test(MongoDbModel data){
+  Widget CardHorse(Horse data){
     return Card(
+      elevation: 10,
+      color: Colors.brown,
       child: Column(
-        children: [
-          Text("${data.username}" "${data.password}" "${data.age}" "${data.email}" "${data.phone}" "${data.ffeProfile}")
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget> [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children:  <Widget> [
+              const Icon(
+                Icons.pets,
+                size: 24.0,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text(data.name)
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children:  <Widget> [
+              Text(data.owner),
+              Text(data.sexe),
+              Text("${data.age}")
+            ]
+          )
         ],
       ),
     );
   }
-  Widget miseEnPage (MongoDbModel data){
+  Widget miseEnPage (Riders data){
 
       return
 
@@ -258,7 +335,7 @@ class _EditprofileState extends State<Editprofile> {
                   Padding(padding: EdgeInsets.all(20),
                       child: Text("Phone : " "${data.phone}")),
                   Padding(padding: EdgeInsets.all(20),
-                      child: Text("Role : " "${data.phone}")),
+                      child: Text("Role : " "${data.role}")),
                   Padding(padding: EdgeInsets.all(20),
                       child: Text("FFE Link : " "${data.ffeProfile}"))
 
@@ -268,12 +345,12 @@ class _EditprofileState extends State<Editprofile> {
               Row(
                 children: [
                   Padding(padding: EdgeInsets.all(10),
-                      child: Text("Liste des Chevaux" , style: TextStyle(fontSize: 18))),
+                      child: Text("Liste des Chevaux" , style: TextStyle(fontSize: 20))),
                   Padding(
                       padding: EdgeInsets.only(left: MediaQuery
                           .of(context)
                           .size
-                          .width - 235, top: 15),
+                          .width - 255, top: 8),
                       child:
                       Container(
                         decoration: const BoxDecoration(
@@ -282,14 +359,9 @@ class _EditprofileState extends State<Editprofile> {
                         ),
                         child: IconButton(
                           icon: const Icon(
-                              Icons.edit, size: 20),
+                              Icons.add, size: 20),
                           onPressed: () {
-                            nameController.text = data.username;
-                            ageController.text = "${data.age}";
-                            emailController.text = data.email;
-                            phoneController.text = data.phone;
-                            ffelinkController.text = data.ffeProfile;
-                            dialogEditProfile(data);
+                            dialogListCheval();
                           },
                         ),
                       )
@@ -299,8 +371,8 @@ class _EditprofileState extends State<Editprofile> {
             ]
         );
   }
-  Future<void> _updateData(var id, String password,String image,String username,int age,String phone,String email, String ffeProfile,int role,List<Horse> horses) async{
-    final updateData = MongoDbModel(id: id, username: username, password: password, image: image, email: email, role: role, horses: horses, phone: phone, age: age, ffeProfile: ffeProfile);
+  Future<void> _updateData(var id, String password,String image,String username,int age,String phone,String email, String ffeProfile,int role,List<String> isDp, List<String> isOwner) async{
+    final updateData = Riders(id: id, username: username, password: password, image: image, email: email, role: role, phone: phone, age: age, ffeProfile: ffeProfile, isDp : isDp, isOwner : isOwner);
     await MongoDatabase.update(updateData);
   }
 }

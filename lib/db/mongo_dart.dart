@@ -2,35 +2,41 @@ import 'dart:developer';
 
 import 'package:projet_flutter/MongoDBModel.dart';
 
+import '../class/Riders.dart';
 import '../class/User.dart';
 import 'constant.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class MongoDatabase{
 
-    static var db, userCollection;
+    static var db, riderCollection, horseCollection;
     static connect() async {
       var db = await Db.create(MONGO_URL);
       await db.open();
-      userCollection = db.collection(COLLECTION_NAME);
+      riderCollection = db.collection(COLLECTION_RIDER);
+      horseCollection = db.collection(COLLECTION_HORSE);
     }
-    static Future<void> update(MongoDbModel data) async{
-      var result = await userCollection.findOne({"_id": data.id});
+    static Future<void> update(Riders data) async{
+      var result = await riderCollection.findOne({"_id": data.id});
       result["username"] = data.username;
       result["age"] = data.age;
       result["email"] = data.email;
       result["role"] = data.role;
       result["ffeProfile"] = data.ffeProfile;
-      var response = await userCollection.save(result);
+      var response = await riderCollection.save(result);
       inspect(response);
     }
-    static Future<List<Map<String,dynamic>>> getData() async{
-      final arrData = await userCollection.find().toList();
+    static Future<List<Map<String,dynamic>>> getDataRider() async{
+      final arrData = await riderCollection.find().toList();
+      return arrData;
+    }
+    static Future<List<Map<String,dynamic>>> getDataHorse() async{
+      final arrData = await horseCollection.find().toList();
       return arrData;
     }
     static Future<List<Map<String,dynamic>>> getQueryData() async{
-      final arrData = await userCollection
-          .find()
+      final arrData = await riderCollection
+          .find(where.eq("_id", ObjectId.fromHexString("637f52eb44a0488cf0971717")))
           .toList();
       return arrData;
     }

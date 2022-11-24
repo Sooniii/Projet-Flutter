@@ -28,8 +28,8 @@ class Riders {
   String phone;
   int age;
   String ffeProfile;
-  List<ObjectId> isDp;
-  List<ObjectId> isOwner;
+  List<String> isDp;
+  List<String> isOwner;
 
   factory Riders.fromJson(Map<String, dynamic> json) => Riders(
     id: json["_id"],
@@ -41,8 +41,8 @@ class Riders {
     phone: json["phone"],
     age: json["age"],
     ffeProfile: json["ffeProfile"],
-    isDp: List<ObjectId>.from(json["isDp"].map((x) => x)),
-    isOwner: List<ObjectId>.from(json["isOwner"].map((x) => x)),
+    isDp: List<String>.from(json["isDp"].map((x) => x)),
+    isOwner: List<String>.from(json["isOwner"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -55,8 +55,8 @@ class Riders {
     "phone": phone,
     "age": age,
     "ffeProfile": ffeProfile,
-    "isDp": List<ObjectId>.from(isDp.map((x) => x)),
-    "isOwner": List<ObjectId>.from(isOwner.map((x) => x)),
+    "isDp": List<String>.from(isDp.map((x) => x)),
+    "isOwner": List<String>.from(isOwner.map((x) => x)),
   };
 }
 
