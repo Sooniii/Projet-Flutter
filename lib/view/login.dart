@@ -6,6 +6,7 @@ import '../db/constant.dart';
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
 
+  static const tag = "/login";
   final String title;
 
   @override
@@ -13,7 +14,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   var passwordController = TextEditingController();
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
@@ -64,14 +64,14 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                        MongoDatabase.getUser(usernameController.text)
+                      MongoDatabase.getUser(usernameController.text)
                           .then((retour) {
                         setState(() {
                           user = retour;
                           if (user != null) {
                             if (passwordController.text == user["password"]) {
-                              // userLogged = user;
-                              // TODO : Mettre la route pour la page des news
+                              userLogged = user;
+                              Navigator.of(context).pushNamed("/news");
                             } else {
                               showDialog(
                                 context: context,
@@ -105,7 +105,7 @@ class _LoginState extends State<Login> {
               ),
               TextButton(
                   onPressed: () {
-                    // TODO : Mettre la route pour la page inscription
+                    Navigator.of(context).pushNamed("/register");
                   },
                   child:
                       const Text("Vous n'avez pas de compte ? Inscrivez vous"))
@@ -146,8 +146,7 @@ class _LoginState extends State<Login> {
         ),
         TextButton(
           onPressed: () {
-            MongoDatabase.getUser(usernameController.text)
-                .then((retour) {
+            MongoDatabase.getUser(usernameController.text).then((retour) {
               setState(() {
                 user = retour;
                 if (user != null) {
@@ -213,20 +212,24 @@ class _LoginState extends State<Login> {
         ),
         TextButton(
           onPressed: () {
-            MongoDatabase.getUser(usernameController.text).then((retour){
+            MongoDatabase.getUser(usernameController.text).then((retour) {
               setState(() {
                 user = retour;
                 if (user != null) {
-                  if (newPasswordController.text == verifPasswordController.text) {
-                    MongoDatabase.updatePassword(usernameController.text, newPasswordController.text);
+                  if (newPasswordController.text ==
+                      verifPasswordController.text) {
+                    MongoDatabase.updatePassword(
+                        usernameController.text, newPasswordController.text);
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => buildSuccessPopUp(context),
+                      builder: (BuildContext context) =>
+                          buildSuccessPopUp(context),
                     );
                   } else {
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => buildDifferentPasswordPopUp(context),
+                      builder: (BuildContext context) =>
+                          buildDifferentPasswordPopUp(context),
                     );
                   }
                 }
@@ -271,7 +274,8 @@ class _LoginState extends State<Login> {
 
   Widget buildWrongEmailPopUp(BuildContext context) {
     return AlertDialog(
-        title: const Text("L'adresse email et le nom d'utilisateur ne correspondent pas"),
+        title: const Text(
+            "L'adresse email et le nom d'utilisateur ne correspondent pas"),
         content: TextButton(
             onPressed: () {
               Navigator.pop(context);
