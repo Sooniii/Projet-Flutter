@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:projet_flutter/news_page.dart';
 import 'package:projet_flutter/register.dart';
 import 'HomePage.dart';
 import 'db/mongo_dart.dart';
