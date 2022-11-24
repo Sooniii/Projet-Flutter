@@ -1,14 +1,21 @@
 import 'dart:developer';
 
-import '../class/User.dart';
-import 'constant.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+import '../class/User.dart';
+import 'constant.dart';
+
+var db, userCollection;
+
 class MongoDatabase{
+
+
   static connect() async {
     var db = await Db.create(MONGO_URL);
     await db.open();
+    userCollection = db.collection(COLLECTION_NAME);
     inspect(db);
+
 
     var status = db.serverStatus();
     print(status);
@@ -27,5 +34,16 @@ class MongoDatabase{
     //   "ffeProfile": user.ffeProfile
     // });
     // print(await userCollection.find().toList());
+  }
+
+  static getUser(String name) async {
+
+    var user = await userCollection.findOne(where.eq("username", name));
+    return user;
+  }
+
+  static updatePassword(String name, String password) async {
+
+    await userCollection.update(where.eq('username', name), modify.set("password", password));
   }
 }
