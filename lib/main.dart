@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projet_flutter/register.dart';
-import 'HomePage.dart';
+import 'package:projet_flutter/class/lessons.dart';
 import 'db/mongo_dart.dart';
+import 'lesson.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const Register(title: 'Ride me'),
+      home:  const RidingLesson(title: "tt",),
     );
   }
 }

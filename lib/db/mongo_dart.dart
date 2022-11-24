@@ -26,6 +26,20 @@ class MongoDatabase {
 
   }
 
+  static insertRidingLessons(data) async {
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    print("db");
+    print(db);
+    var collection = db.collection(COLLECTION_NAME_RIDING_LESSONS);
+    print("collection");
+    print(collection);
+    var result = await collection.insertOne(data);
+    print("test");
+    print (result);
+
+  }
+
 // User user = User("admin", "admin", "logo.png", "admin@admin.fr", 0, [], "", null, "");
 // var userCollection = db.collection(COLLECTION_NAME);
 // userCollection.insertOne({
