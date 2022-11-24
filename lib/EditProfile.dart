@@ -17,9 +17,14 @@ class _EditprofileState extends State<Editprofile> {
   final phoneController = TextEditingController();
   final roleController = TextEditingController();
   final ffelinkController = TextEditingController();
-  List<String> list = ["a","b","v","g"," f","f","c","c","c","c","c"];
-  int? edit = 0;
-  void dialog(MongoDbModel data){
+  final nameHorseController = TextEditingController();
+  final ageHorseController = TextEditingController();
+  final raceHorseController = TextEditingController();
+  final genderHorseController = TextEditingController();
+  final colorHorseController = TextEditingController();
+
+
+  void dialogEditProfile(MongoDbModel data){
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -87,6 +92,73 @@ class _EditprofileState extends State<Editprofile> {
       ),
     );
   }
+  void dialogEditCheval(MongoDbModel data){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Edition du cheval"),
+        content:  Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              TextFormField(
+                  controller: nameHorseController,
+                  maxLength: 60,
+                  decoration: const InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
+              TextFormField(
+                  controller: ageHorseController,
+                  maxLength: 25,
+                  decoration: const InputDecoration(
+                      labelText: 'Age',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
+              TextFormField(
+                  controller: colorHorseController,
+                  maxLength: 25,
+                  decoration: const InputDecoration(
+                      labelText: 'color',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
+              TextFormField(
+                  controller: raceHorseController,
+                  maxLength: 25,
+                  decoration: const InputDecoration(
+                      labelText: 'race',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
+              TextFormField(
+                  controller: genderHorseController,
+                  maxLength: 25,
+                  decoration: const InputDecoration(
+                      labelText: 'gender',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
+            ],
+
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+            child: const Text('Envoyer'),
+          ),
+        ],
+
+
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +208,7 @@ class _EditprofileState extends State<Editprofile> {
                   padding: EdgeInsets.only(left: MediaQuery
                       .of(context)
                       .size
-                      .width - 100, top: 15),
+                      .width - 80, top: 15),
                   child:
                   Container(
                     decoration: const BoxDecoration(
@@ -152,7 +224,7 @@ class _EditprofileState extends State<Editprofile> {
                         emailController.text = data.email;
                         phoneController.text = data.phone;
                         ffelinkController.text = data.ffeProfile;
-                        dialog(data);
+                        dialogEditProfile(data);
                       },
                     ),
                   )
@@ -193,9 +265,37 @@ class _EditprofileState extends State<Editprofile> {
 
                 ],
               ),
-              Padding(padding: EdgeInsets.all(20),
-                  child: Text("Liste des Chevaux" "${data.horses}")),
-
+              Row(
+                children: [
+                  Padding(padding: EdgeInsets.all(10),
+                      child: Text("Liste des Chevaux" , style: TextStyle(fontSize: 18))),
+                  Padding(
+                      padding: EdgeInsets.only(left: MediaQuery
+                          .of(context)
+                          .size
+                          .width - 235, top: 15),
+                      child:
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.brown,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: const Icon(
+                              Icons.edit, size: 20),
+                          onPressed: () {
+                            nameController.text = data.username;
+                            ageController.text = "${data.age}";
+                            emailController.text = data.email;
+                            phoneController.text = data.phone;
+                            ffelinkController.text = data.ffeProfile;
+                            dialogEditProfile(data);
+                          },
+                        ),
+                      )
+                  )
+                ]
+              )
             ]
         );
   }
