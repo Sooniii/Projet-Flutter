@@ -18,11 +18,14 @@ class Party extends StatefulWidget {
 class _PartyState extends State<Party> {
 
   final List<Card> _counter = [];
+  final List<String> listType = <String>['Apéro', 'Repas'];
+  String dropDownValueType = "Apéro";
   late String _hour, _minute, _time;
   late String dateTime;
   late DateTime selectedDate = DateTime.now();
   late TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
   TextEditingController nameController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
 
@@ -60,13 +63,14 @@ class _PartyState extends State<Party> {
     }
   }
 
-  Future<void> _insertData(String name, String dateTime, String dayTime) async {
+  Future<void> _insertData(String name, String type, String dateTime, String dayTime) async {
     try {
       var id = M.ObjectId();
       var data =
       ({
         "_id": id,
         "name": nameController.text,
+        "type": dropDownValueType,
         "dateTime": _dateController.text,
         "dayTime": _timeController.text,
       });
@@ -77,7 +81,7 @@ class _PartyState extends State<Party> {
   }
 
 
-  void _incrementCounter(name, date, time) {
+  void _incrementCounter(name, type, date, time) {
     setState(() {
       _counter.add(Card(
         elevation: 8.0,
@@ -87,6 +91,9 @@ class _PartyState extends State<Party> {
               children: <Widget>[
                 ListTile(
                   title: Text(name),
+                ),
+                ListTile(
+                  title: Text(dropDownValueType),
                 ),
                 ListTile(
                   title: Text(date),
@@ -139,7 +146,6 @@ class _PartyState extends State<Party> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return StatefulBuilder(builder: (context, setState){
-
           return AlertDialog(
             content: Text("Are You Sure Want To Proceed?"),
             actions: <Widget>[
@@ -150,8 +156,20 @@ class _PartyState extends State<Party> {
                   labelText: 'Name',
                 ),
               ),
-
-            // InkWell(),
+              DropdownButton(
+                style: const TextStyle(color: Colors.blue),
+                items: listType.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: dropDownValueType,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState((){
+                    dropDownValueType = newValue!;
+                  });
+                },
+              ),
 
               InkWell(
                 onTap: () {
@@ -176,6 +194,7 @@ class _PartyState extends State<Party> {
                   ),
                 ),
               ),
+
               InkWell(
                 onTap: () {
                   _selectTime(context);
@@ -202,9 +221,10 @@ class _PartyState extends State<Party> {
 
               TextButton(
                 onPressed: () {
-                  _incrementCounter(nameController.text, _dateController.text, _timeController.text);
+                  _incrementCounter(nameController.text, typeController.text, _dateController.text, _timeController.text);
                   _insertData(
                     nameController.text,
+                    typeController.text,
                     _dateController.text,
                     _timeController.text,
                   );
@@ -212,14 +232,12 @@ class _PartyState extends State<Party> {
                   const snackBar = SnackBar(
                     content: Text('People Added!'),
                   );
-
                   // Find the ScaffoldMessenger in the widget tree
                   // and use it to show a SnackBar.
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: const Text("Valider"),
               )
-
               // usually buttons at the bottom of the dialog
             ],
           );

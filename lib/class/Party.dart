@@ -5,10 +5,11 @@ class Party{
   late String name;
   late String date;
   late String time;
+  late String type;
   late List<ObjectId> horses;
   Icon icon;
 
-  Party(this.name, this.date, this.time, this.icon);
+  Party(this.name, this.date, this.time, this.icon, this.type);
 }
 
 class ImageData {
