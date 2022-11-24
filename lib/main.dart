@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/view/party.dart';
 import 'package:projet_flutter/class/lessons.dart';
 import 'view/login.dart';
 

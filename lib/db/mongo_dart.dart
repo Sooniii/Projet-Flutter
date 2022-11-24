@@ -84,4 +84,12 @@ class MongoDatabase{
 
     await userCollection.update(where.eq('username', name), modify.set("password", password));
   }
+
+  static insertOneParty(data)async {
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    var collection = db.collection(COLLECTION_NAME_PARTY);
+    print(collection);
+    var result = await collection.insertOne(data);
+  }
 }
