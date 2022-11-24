@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/view/party.dart';
 import 'view/login.dart';
 
 import 'package:projet_flutter/view/news_page.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const Login (title: 'Ride me'),
+      home: const Party (title: 'Ride me'),
     );
   }
 }
