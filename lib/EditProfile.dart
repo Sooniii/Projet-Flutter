@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/MongoDBModel.dart';
+import 'package:projet_flutter/db/mongo_dart.dart';
+
 class Editprofile extends StatefulWidget {
   const Editprofile({super.key, required this.title});
   final String title;
@@ -16,7 +19,7 @@ class _EditprofileState extends State<Editprofile> {
   final ffelinkController = TextEditingController();
   List<String> list = ["a","b","v","g"," f","f","c","c","c","c","c"];
   int? edit = 0;
-  void dialog(){
+  void dialog(MongoDbModel data){
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -38,7 +41,7 @@ class _EditprofileState extends State<Editprofile> {
                   controller: ageController,
                   maxLength: 25,
                   decoration: const InputDecoration(
-                      labelText: 'FirstName',
+                      labelText: 'Age',
                       hintText: 'Entrer du texte',
                       border: OutlineInputBorder())
               ),
@@ -54,7 +57,7 @@ class _EditprofileState extends State<Editprofile> {
                   controller: phoneController,
                   maxLength: 25,
                   decoration: const InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Phone',
                       hintText: 'Entrer du texte',
                       border: OutlineInputBorder())
               ),
@@ -62,7 +65,7 @@ class _EditprofileState extends State<Editprofile> {
                   controller: ffelinkController,
                   maxLength: 25,
                   decoration: const InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Link FFE',
                       hintText: 'Entrer du texte',
                       border: OutlineInputBorder())
               ),
@@ -72,7 +75,9 @@ class _EditprofileState extends State<Editprofile> {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () {Navigator.pop(context, 'Cancel');
+            onPressed: () {
+              _updateData(data.id, data.password, data.image, nameController.text, int.parse(ageController.text), phoneController.text, emailController.text, ffelinkController.text, data.role, data.horses);
+              Navigator.pop(context, 'Cancel');
             },
             child: const Text('Envoyer'),
           ),
@@ -88,60 +93,114 @@ class _EditprofileState extends State<Editprofile> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
+      body: SafeArea(
+        child: FutureBuilder(
+            future: MongoDatabase.getQueryData(),
+            builder: (context, AsyncSnapshot snapshot){
+              if (snapshot.connectionState == ConnectionState.waiting){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                  if(snapshot.hasData){
+                    var totalData = snapshot.data.length;
+                    print("Tatal Data$totalData");
+                    return miseEnPage(MongoDbModel.fromJson(snapshot.data[0]));
+
+                  } else {
+                    return Center(
+                      child: Text('No Data Available'),
+                    );
+                  }
+                }
+              }
+        ))
+      );
+  }
+  Widget Test(MongoDbModel data){
+    return Card(
+      child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-100, top: 15),
-            child:
-            Container(
-            decoration: const BoxDecoration(
-              color: Colors.brown,
-              shape: BoxShape.circle,
-            ),
-            child:IconButton (
-              icon: const Icon(
-                  Icons.edit, size: 20),
-                onPressed: () {
-                   dialog();
-                },
+          Text("${data.username}" "${data.password}" "${data.age}" "${data.email}" "${data.phone}" "${data.ffeProfile}")
+        ],
+      ),
+    );
+  }
+  Widget miseEnPage (MongoDbModel data){
+
+      return
+
+        ListView(
+            children: [
+              Padding(
+                  padding: EdgeInsets.only(left: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 100, top: 15),
+                  child:
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.brown,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                          Icons.edit, size: 20),
+                      onPressed: () {
+                        nameController.text = data.username;
+                        ageController.text = "${data.age}";
+                        emailController.text = data.email;
+                        phoneController.text = data.phone;
+                        ffelinkController.text = data.ffeProfile;
+                        dialog(data);
+                      },
+                    ),
+                  )
               ),
-            )
-          ),
-            Center(
-                child:Container(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    height: 150,
-                    width: 150,
-                    child: ClipOval(
-                      child: Image.network("https://images.unsplash.com/photo-1669178082499-341906b2ab28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDN8dG93SlpGc2twR2d8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"),
-                    )
-                )
-            ),
-          Column(
-            children:  [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Padding(padding: EdgeInsets.all(20),child: Text("Nom : Louis")),
-                  Padding(padding: EdgeInsets.all(20),child:  Text("Age : 30"))
+              Center(
+                  child: Container(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      height: 150,
+                      width: 150,
+                      child: ClipOval(
+                        child: Image.network(
+                            "https://images.unsplash.com/photo-1669178082499-341906b2ab28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDN8dG93SlpGc2twR2d8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"),
+                      )
+                  )
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(padding: EdgeInsets.all(20),
+                          child: Text("Nom : " "${data.username}")),
+                      Padding(padding: EdgeInsets.all(20),
+                          child: Text("Age : " "${data.age}"))
+
+
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.all(20),
+                      child: Text("Email : " "${data.email}")),
+                  Padding(padding: EdgeInsets.all(20),
+                      child: Text("Phone : " "${data.phone}")),
+                  Padding(padding: EdgeInsets.all(20),
+                      child: Text("Role : " "${data.phone}")),
+                  Padding(padding: EdgeInsets.all(20),
+                      child: Text("FFE Link : " "${data.ffeProfile}"))
 
 
                 ],
               ),
-                  const Padding(padding: EdgeInsets.all(20),child: Text("Email : Louis@mail.com")),
-                  const Padding(padding: EdgeInsets.all(20),child: Text("Phone : 6666666666")),
-                  const Padding(padding: EdgeInsets.all(20),child: Text("Role : Cavalier")),
-                  const Padding(padding: EdgeInsets.all(20),child: Text("FFE Link : https://ffe.com"))
+              Padding(padding: EdgeInsets.all(20),
+                  child: Text("Liste des Chevaux" "${data.horses}")),
 
-
-
-            ],
-          ),
-          const Padding(padding: EdgeInsets.all(20),child: Text("Liste des Chevaux")),
-
-        ]
-      )
-
-    );
+            ]
+        );
+  }
+  Future<void> _updateData(var id, String password,String image,String username,int age,String phone,String email, String ffeProfile,int role,List<Horse> horses) async{
+    final updateData = MongoDbModel(id: id, username: username, password: password, image: image, email: email, role: role, horses: horses, phone: phone, age: age, ffeProfile: ffeProfile);
+    await MongoDatabase.update(updateData);
   }
 }
