@@ -12,7 +12,7 @@ import '../db/mongo_dart.dart';
 class RidingLesson extends StatefulWidget {
   const RidingLesson({super.key, required this.title});
 
-  static const tag = "/addLesson";
+  static const tag = "/lesson";
   final String title;
 
   @override

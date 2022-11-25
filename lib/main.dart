@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projet_flutter/EditProfile.dart';
+import 'package:projet_flutter/view/EditProfile.dart';
 import 'package:projet_flutter/view/concours.dart';
 import 'package:projet_flutter/view/party.dart';
 import 'package:projet_flutter/class/lessons.dart';
@@ -35,8 +35,10 @@ class MyApp extends StatelessWidget {
         Register.tag: (context) => const Register(title: "Register"),
         Login.tag: (context) => const Login(title: "Login"),
         NewsPage.tag: (context) => const NewsPage(title: "News"),
-        RidingLesson.tag: (context) => const RidingLesson(title: "Ajouter un cours"),
-        Party.tag: (context) => const Party(title: "Ajouter une soirée"),
+        RidingLesson.tag: (context) => const RidingLesson(title: "Cours"),
+        Party.tag: (context) => const Party(title: "Soirée"),
+        Editprofile.tag: (context) => const Editprofile(title: "Modifier mon profil"),
+        Concours.tag: (context) => const Concours(title: "Concours"),
       },
     );
   }

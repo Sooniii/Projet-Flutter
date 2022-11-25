@@ -9,6 +9,8 @@ import 'package:projet_flutter/class/Riders.dart';
 import 'package:projet_flutter/db/mongo_dart.dart';
 
 class Editprofile extends StatefulWidget {
+
+  static var tag = "/editprofile";
   const Editprofile({super.key, required this.title});
   final String title;
   @override

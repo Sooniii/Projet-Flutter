@@ -10,6 +10,8 @@ class Concours extends StatefulWidget {
 
   final String title;
 
+  static const tag = "/addConcours";
+
   @override
   State<Concours> createState() => _ConcoursState();
 }

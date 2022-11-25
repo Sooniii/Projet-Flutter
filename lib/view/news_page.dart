@@ -83,9 +83,27 @@ class _NewsPageState extends State<NewsPage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.account_box),
+            onPressed: () {
+              Navigator.pushNamed(context, "/editprofile");
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.book),
+            onPressed: () {
+              Navigator.pushNamed(context, "/lesson");
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.party_mode),
             onPressed: () {
               Navigator.pushNamed(context, "/addParty");
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.euro),
+            onPressed: () {
+              Navigator.pushNamed(context, "/addConcours");
             },
           )
         ],
