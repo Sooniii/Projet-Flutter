@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter/EditProfile.dart';
+import 'HomePage.dart';
 import 'package:projet_flutter/view/concours.dart';
 import 'package:projet_flutter/view/party.dart';
 import 'package:projet_flutter/class/lessons.dart';
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: const Concours(title: 'Ride me'),
+      home: const Login(title: 'Ride me'),
       routes: {
         Register.tag: (context) => const Register(title: "Register"),
         Login.tag: (context) => const Login(title: "Login"),
