@@ -7,49 +7,53 @@ class User{
   required this.id,
   required this.username,
   required this.password,
-  required this.image,
+  required this.picture,
   required this.email,
   required this.role,
-  required this.horses,
   required this.phone,
   required this.age,
   required this.ffeProfile,
+  required this.isDp,
+  required this.isOwner,
   });
 
   ObjectId id;
   String username;
   String password;
-  String image;
+  String picture;
   String email;
   int role;
-  List<Horse> horses;
   String phone;
   int age;
   String ffeProfile;
+  List<String> isDp;
+  List<String> isOwner;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
   id: json["_id"],
   username: json["username"],
   password: json["password"],
-  image: json["image"],
+  picture: json["picture"],
   email: json["email"],
   role: json["role"],
-  horses: List<Horse>.from(json["horses"].map((x) => Horse.fromJson(x))),
   phone: json["phone"],
   age: json["age"],
   ffeProfile: json["ffeProfile"],
+  isDp: List<String>.from(json["isDp"].map((x) => x)),
+  isOwner: List<String>.from(json["isOwner"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
   "_id": id,
   "username": username,
   "password": password,
-  "image": image,
+  "picture":  picture,
   "email": email,
   "role": role,
-  "horses": List<dynamic>.from(horses.map((x) => x.toJson())),
   "phone": phone,
   "age": age,
   "ffeProfile": ffeProfile,
+    "isDp": List<String>.from(isDp.map((x) => x)),
+    "isOwner": List<String>.from(isOwner.map((x) => x)),
   };
 }

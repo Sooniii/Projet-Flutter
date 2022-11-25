@@ -144,6 +144,14 @@ class _RegisterState extends State<Register> {
         "password": passwordController.text,
         "picture": passwordController.text,
         "email": emailAdressController.text,
+        "role": 1,
+        "phone": "",
+        "phone": "",
+        "ffeProfile": "",
+        "age": 0,
+        "isOwner":[],
+        "isDp":[],
+
       });
       await MongoDatabase.insertOne(data);
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_flutter/db/mongo_dart.dart';
 
+import '../class/User.dart';
 import '../db/constant.dart';
 
 class Login extends StatefulWidget {
@@ -70,7 +71,9 @@ class _LoginState extends State<Login> {
                           user = retour;
                           if (user != null) {
                             if (passwordController.text == user["password"]) {
-                              userLogged = user;
+                              userLogged = User.fromJson(user);
+                              print(userLogged);
+                              print(userLogged?.username);
                               Navigator.of(context).pushNamed("/news");
                             } else {
                               showDialog(

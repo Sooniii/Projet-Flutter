@@ -12,21 +12,22 @@ var db, userCollection, newsCollection;
 
 class MongoDatabase{
 
-    static var db, riderCollection, horseCollection;
+    static var db, riderCollection, horseCollection, userCollection;
     static connect() async {
       db = await Db.create(MONGO_URL);
       await db.open();
       riderCollection = db.collection(COLLECTION_RIDER);
       horseCollection = db.collection(COLLECTION_HORSE);
+      userCollection = db.collection(COLLECTION_NAME);
     }
-    static Future<void> update(Riders data) async{
-      var result = await riderCollection.findOne({"_id": data.id});
+    static Future<void> update(User data) async{
+      var result = await userCollection.findOne({"_id": data.id});
       result["username"] = data.username;
       result["age"] = data.age;
       result["email"] = data.email;
       result["role"] = data.role;
       result["ffeProfile"] = data.ffeProfile;
-      var response = await riderCollection.save(result);
+      var response = await userCollection.save(result);
       inspect(response);
     }
     //Fonctionne pas
@@ -115,6 +116,11 @@ class MongoDatabase{
     var user = await userCollection.findOne(where.eq("username", name));
     return user;
   }
+    static getUserById(ObjectId id) async {
+      userCollection = db.collection(COLLECTION_NAME);
+      var user = await userCollection.findOne(where.eq("_id", id));
+      return user;
+    }
 
   static updatePassword(String name, String password) async {
 

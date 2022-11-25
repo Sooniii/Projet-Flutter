@@ -11,4 +11,4 @@ const COLLECTION_NAME_RIDING_LESSONS = "riding_lessons";
 
 const COLLECTION_NAME_CONCOURS = "concours";
 
-var userLogged;
+User? userLogged;
