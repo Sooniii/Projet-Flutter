@@ -4,11 +4,13 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as M;
+import 'package:projet_flutter/class/Party.dart';
 import '../db/mongo_dart.dart';
 
 class Party extends StatefulWidget {
   const Party({Key? key, required this.title}) : super(key: key);
 
+  static const tag = "/addParty";
   final String title;
 
   @override
@@ -65,14 +67,18 @@ class _PartyState extends State<Party> {
 
   Future<void> _insertData(String name, String type, String dateTime, String dayTime) async {
     try {
-      var id = M.ObjectId();
+      Parties party = Parties("Apéro à base de cheval", "Ramenez vos steak", 0, DateTime.now(), name, dateTime, dayTime, type, [], const Icon(Icons.person));
       var data =
       ({
-        "_id": id,
+        "title": party.title,
+        "content": party.content,
+        "newsType": party.newsType,
+        "addedAt": party.addedAt,
         "name": nameController.text,
         "type": dropDownValueType,
         "dateTime": _dateController.text,
         "dayTime": _timeController.text,
+        "icon": party.icon,
       });
       await MongoDatabase.insertOneParty(data);
       // ignore: empty_catches
@@ -222,15 +228,10 @@ class _PartyState extends State<Party> {
               TextButton(
                 onPressed: () {
                   _incrementCounter(nameController.text, typeController.text, _dateController.text, _timeController.text);
-                  _insertData(
-                    nameController.text,
-                    typeController.text,
-                    _dateController.text,
-                    _timeController.text,
-                  );
+                  _insertData(nameController.text, typeController.text, _dateController.text, _timeController.text);
                   Navigator.of(context).pop();
                   const snackBar = SnackBar(
-                    content: Text('People Added!'),
+                    content: Text('Soirée ajouté !'),
                   );
                   // Find the ScaffoldMessenger in the widget tree
                   // and use it to show a SnackBar.

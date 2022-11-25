@@ -38,7 +38,7 @@ class MongoDatabase{
     await db.open();
     print("db");
     print(db);
-    var collection = db.collection(COLLECTION_NAME_RIDING_LESSONS);
+    var collection = db.collection("news");
     print("collection");
     print(collection);
     var result = await collection.insertOne(data);
@@ -85,11 +85,14 @@ class MongoDatabase{
     await userCollection.update(where.eq('username', name), modify.set("password", password));
   }
 
-  static insertOneParty(data)async {
+  static insertOneParty(data) async {
     var db = await Db.create(MONGO_URL);
     await db.open();
-    var collection = db.collection(COLLECTION_NAME_PARTY);
+    var collection = db.collection("party");
+    print("collection");
     print(collection);
     var result = await collection.insertOne(data);
+    print("test");
+    print (result);
   }
 }
