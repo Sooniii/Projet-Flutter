@@ -11,7 +11,7 @@ import 'view/register.dart';
 import 'view/news_page.dart';
 
 import 'db/mongo_dart.dart';
-import 'lesson.dart';
+import 'view/lesson.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +33,9 @@ class MyApp extends StatelessWidget {
       routes: {
         Register.tag: (context) => const Register(title: "Register"),
         Login.tag: (context) => const Login(title: "Login"),
-        NewsPage.tag: (context) => const NewsPage(title: "News")
+        NewsPage.tag: (context) => const NewsPage(title: "News"),
+        RidingLesson.tag: (context) => const RidingLesson(title: "Ajouter un cours"),
+        Party.tag: (context) => const Party(title: "Ajouter une soirée"),
       },
     );
   }

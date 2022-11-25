@@ -81,6 +81,14 @@ class _NewsPageState extends State<NewsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.pushNamed(context, "/addParty");
+            },
+          )
+        ],
       ),
       body: Center(
         child: FutureBuilder(

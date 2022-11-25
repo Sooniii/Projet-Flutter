@@ -4,12 +4,15 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mongo_dart/mongo_dart.dart' as M;
-import 'db/mongo_dart.dart';
+import 'package:projet_flutter/class/lessons.dart';
+import '../class/News.dart';
+import '../db/mongo_dart.dart';
 
 
 class RidingLesson extends StatefulWidget {
   const RidingLesson({super.key, required this.title});
 
+  static const tag = "/addLesson";
   final String title;
 
   @override
@@ -69,10 +72,13 @@ class _RidingLesson extends State<RidingLesson> {
 
   Future<void> _insertData(String dateTime, String dayTime, String place, String discipline, String duration) async {
     try {
-      var id = M.ObjectId();
+      Lesson lesson = Lesson("Lesson d'obstacle", "Resumé du cours", 0, DateTime.now(), dateTime, dayTime, place, discipline, duration);
       var data =
       ({
-        "_id": id,
+        "title": lesson.title,
+        "content": lesson.content,
+        "newsType": lesson.newsType,
+        "addedAt": lesson.addedAt,
         "dateTime": _dateController.text,
         "dayTime": _timeController.text,
         "place": dropDownValuePlace,
@@ -133,12 +139,7 @@ class _RidingLesson extends State<RidingLesson> {
       ),
       body: Center(
 
-        child: ListView.builder(
-          itemCount: _counter.length,
-          itemBuilder: (context, index) {
-            return _counter[index];
-          },
-        ),
+
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showDialog,
