@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projet_flutter/EditProfile.dart';
-import 'HomePage.dart';
 import 'package:projet_flutter/view/concours.dart';
 import 'package:projet_flutter/view/party.dart';
 import 'package:projet_flutter/class/lessons.dart';

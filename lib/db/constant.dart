@@ -9,7 +9,6 @@ const COLLECTION_NAME = "user";
 const COLLECTION_NAME_PARTY = "party";
 const COLLECTION_NAME_RIDING_LESSONS = "riding_lessons";
 
-const COLLECTION_NAME_PARTY = "party";
 const COLLECTION_NAME_CONCOURS = "concours";
 
 var userLogged;

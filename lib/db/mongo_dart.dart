@@ -51,7 +51,9 @@ class MongoDatabase{
       var arrData = await riderCollection
           .find(where.eq("_id", ObjectId.fromHexString("637f52eb44a0488cf0971717")))
           .toList();
+      return arrData;
     }
+
   static insertOne(data)async {
     var db = await Db.create(MONGO_URL);
     await db.open();
@@ -93,8 +95,6 @@ class MongoDatabase{
     return maListe;
   }
 
-      return arrData;
-    }
     // User user = User("admin", "admin", "logo.png", "admin@admin.fr", 0, [], "", null, "");
     // var userCollection = db.collection(COLLECTION_NAME);
     // userCollection.insertOne({
@@ -111,6 +111,7 @@ class MongoDatabase{
     // print(await userCollection.find().toList());
 
   static getUser(String name) async {
+    userCollection = db.collection(COLLECTION_NAME);
     var user = await userCollection.findOne(where.eq("username", name));
     return user;
   }
