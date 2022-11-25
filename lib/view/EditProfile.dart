@@ -9,9 +9,9 @@ import 'package:projet_flutter/class/Riders.dart';
 import 'package:projet_flutter/db/mongo_dart.dart';
 
 class Editprofile extends StatefulWidget {
-
-  static var tag = "/editprofile";
   const Editprofile({super.key, required this.title});
+
+  static var tag = '/editprofile';
   final String title;
   @override
   State<Editprofile> createState() => _EditprofileState();
@@ -122,15 +122,15 @@ class _EditprofileState extends State<Editprofile> {
                         var totalData = snapshot.data.length;
                         print("Tatal Data$totalData");
                         return GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 420,
-                            childAspectRatio: 3/2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 20),
-                            itemCount:  snapshot.data.length,
-                            itemBuilder: (context, index) {
-                                  return CardHorse(Horse.fromJson(snapshot.data[index]));
-                            },
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 420,
+                              childAspectRatio: 3/2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 20),
+                          itemCount:  snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return CardHorse(Horse.fromJson(snapshot.data[index]));
+                          },
                         );
                       } else {
                         return const Center(
@@ -146,7 +146,7 @@ class _EditprofileState extends State<Editprofile> {
             onPressed: () {
               Navigator.pop(context, 'Cancel');
             },
-              child: const Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -233,7 +233,7 @@ class _EditprofileState extends State<Editprofile> {
   Widget CardHorse(Horse data){
     return GestureDetector(
         onTap: () {
-          _updateOwner(
+          /*_updateOwner(
               data.id,
               data.name,
               data.image,
@@ -242,51 +242,63 @@ class _EditprofileState extends State<Editprofile> {
               data.race,
               data.sexe,
               data.speciality,
-              data.owner);
+              data.owner);*/
           Navigator.of(context).pop();
           const snackBar = SnackBar(
-          content: Text('The owner of horse as been edited'),
+            content: Text('The owner of horse as been edited'),
           );
 
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
         },
         child:
-        Card(
-          elevation: 10,
-          color: Colors.brown,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget> [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:  <Widget> [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('assets/cheval.jpeg'),
-                          fit: BoxFit.fill
+        SizedBox(
+            height: 100,
+            width: 100,
+            child:
+            Card(
+                elevation: 10,
+                color: Colors.brown,
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children:  <Widget> [
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage('assets/cheval.jpeg'),
+                            fit: BoxFit.fill
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(padding: const EdgeInsets.only(right: 30, bottom: 20), child: Text(data.name),)
+                    Padding(padding: const EdgeInsets.only(left: 30), child: Text(data.name),),
+                    Container(
 
-                ],
-              ),
-              Padding(padding: const EdgeInsets.only(top: 20),child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children:  <Widget> [
-                    Text("${data.age}"),
-                    Text(data.sexe),
-                    Text(data.race)
-                  ]
-              )
-              )
-            ],
-          ),
+                      decoration: const BoxDecoration(
+                        color: Colors.brown,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                            Icons.edit, size: 20),
+                        onPressed: () {
+                          nameHorseController.text =  data.name;
+                          ageHorseController.text = "${data.age}";
+                          colorHorseController.text = data.color;
+                          genderHorseController.text = data.sexe;
+                          raceHorseController.text = data.race;
+                          specialityHorseController.text = data.speciality;
+                          dialogEditCheval(data);
+                        },
+                      ),
+                    )
+
+                  ],
+                )
+            )
         )
     );
   }
@@ -329,17 +341,17 @@ class _EditprofileState extends State<Editprofile> {
                 )
             ),
             Center(
-                child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
                       image: NetworkImage("https://images.unsplash.com/photo-1669178082499-341906b2ab28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDN8dG93SlpGc2twR2d8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"),
-                     fit: BoxFit.fill
-                    ),
+                      fit: BoxFit.fill
                   ),
                 ),
+              ),
             ),
             Column(
               children: [
@@ -405,32 +417,32 @@ class _EditprofileState extends State<Editprofile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: SafeArea(
-        child: FutureBuilder(
-            future: MongoDatabase.getQueryData(),
-            builder: (context, AsyncSnapshot snapshot){
-              if (snapshot.connectionState == ConnectionState.waiting){
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                  if(snapshot.hasData){
-                    var totalData = snapshot.data.length;
-                    print("Tatal Data$totalData");
-                    return miseEnPage(Riders.fromJson(snapshot.data[0]));
-
-                  } else {
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: SafeArea(
+            child: FutureBuilder(
+                future: MongoDatabase.getQueryData(),
+                builder: (context, AsyncSnapshot snapshot){
+                  if (snapshot.connectionState == ConnectionState.waiting){
                     return const Center(
-                      child: Text('No Data Available'),
+                      child: CircularProgressIndicator(),
                     );
+                  } else {
+                    if(snapshot.hasData){
+                      var totalData = snapshot.data.length;
+                      print("Tatal Data$totalData");
+                      return miseEnPage(Riders.fromJson(snapshot.data[0]));
+
+                    } else {
+                      return const Center(
+                        child: Text('No Data Available'),
+                      );
+                    }
                   }
                 }
-              }
-        ))
-      );
+            ))
+    );
   }
 
 }
