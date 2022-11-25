@@ -27,6 +27,7 @@ class MongoDatabase{
     //Fonctionne pas
     static Future<void> updateHorse(Horse data) async{
       var result = await horseCollection.findOne({"_id": data.id});
+      result["owner"] = "637f52eb44a0488cf0971717";
       var response = await horseCollection.save(result);
       inspect(response);
     }

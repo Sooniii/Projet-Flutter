@@ -222,7 +222,7 @@ class _EditprofileState extends State<Editprofile> {
   // Créeation de cartes pour les chevaux
   Widget CardHorse(Horse data){
     return GestureDetector(
-        onTap: () => print(""),//_updateOwner(data.id, data.name, data.image, data.color, data.age, data.race, data.sexe, data.speciality, data.owner),
+        onTap: () => _updateOwner(data.id, data.name, data.image, data.color, data.age, data.race, data.sexe, data.speciality, data.owner),
         child:
         Card(
           elevation: 10,
