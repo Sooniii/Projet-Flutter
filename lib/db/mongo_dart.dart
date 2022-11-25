@@ -92,4 +92,13 @@ class MongoDatabase{
     print(collection);
     var result = await collection.insertOne(data);
   }
+
+
+  static insertOneConcours(data)async {
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    var collection = db.collection(COLLECTION_NAME_CONCOURS);
+    print(collection);
+    var result = await collection.insertOne(data);
+  }
 }
