@@ -25,6 +25,11 @@ String newsType(int type) {
     case 2:
       res = "Soirée";
       break;
+    case 3:
+      res = "Nouveau Cavalier";
+      break;
+    default:
+      res = "Erreur";
   }
   return res;
 }

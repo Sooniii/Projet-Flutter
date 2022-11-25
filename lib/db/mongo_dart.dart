@@ -55,19 +55,14 @@ class MongoDatabase{
       return arrData;
     }
 
-  static insertOne(data)async {
-    var db = await Db.create(MONGO_URL);
-    await db.open();
-    print("db");
-    print(db);
-    var collection = db.collection(COLLECTION_NAME);
-    print("collection");
-    print(collection);
-    var result = await collection.insertOne(data);
-    print("test");
-    print (result);
-
-  }
+    static insertOne(data, coll_name)async {
+      var db = await Db.create(MONGO_URL);
+      await db.open();
+      print("db");
+      print(db);
+      var collection = db.collection(coll_name);
+      await collection.insertOne(data);
+    }
 
   static insertRidingLessons(data) async {
     var db = await Db.create(MONGO_URL);

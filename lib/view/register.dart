@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as M;
 import 'package:projet_flutter/class/User.dart';
+import 'package:projet_flutter/db/constant.dart';
 import '../db/mongo_dart.dart';
 
 class Register extends StatefulWidget {
@@ -138,6 +139,12 @@ class _RegisterState extends State<Register> {
       String emailAdress) async {
     try {
       var _id = M.ObjectId();
+      var data2 = ({
+        "title": "Nous accueillons un nouveau membre !",
+        "content": "Bienvenue ${userNameController.text} !",
+        "newsType": 4,
+        "addedAt": DateTime.now(),
+      });
       var data = ({
         "_id": _id,
         "username": userNameController.text,
@@ -153,7 +160,9 @@ class _RegisterState extends State<Register> {
         "isDp":[],
 
       });
-      await MongoDatabase.insertOne(data);
+      await MongoDatabase.insertOne(data, COLLECTION_NAME);
+      await MongoDatabase.insertOne(data2, COLLECTION_NEWS);
+
     } catch (e) {
       print(e);
     }
