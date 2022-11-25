@@ -27,7 +27,7 @@ class _EditprofileState extends State<Editprofile> {
   final raceHorseController = TextEditingController();
   final genderHorseController = TextEditingController();
   final colorHorseController = TextEditingController();
-
+  final specialityHorseController = TextEditingController();
 // Formulaire d'edition du profile utilisateur
   void dialogEditProfile(Riders data){
     showDialog<String>(
@@ -202,6 +202,14 @@ class _EditprofileState extends State<Editprofile> {
                       hintText: 'Entrer du texte',
                       border: OutlineInputBorder())
               ),
+              TextFormField(
+                  controller: specialityHorseController,
+                  maxLength: 25,
+                  decoration: const InputDecoration(
+                      labelText: 'speciality',
+                      hintText: 'Entrer du texte',
+                      border: OutlineInputBorder())
+              ),
             ],
 
           ),
@@ -222,7 +230,25 @@ class _EditprofileState extends State<Editprofile> {
   // Créeation de cartes pour les chevaux
   Widget CardHorse(Horse data){
     return GestureDetector(
-        onTap: () => _updateOwner(data.id, data.name, data.image, data.color, data.age, data.race, data.sexe, data.speciality, data.owner),
+        onTap: () {
+          _updateOwner(
+              data.id,
+              data.name,
+              data.image,
+              data.color,
+              data.age,
+              data.race,
+              data.sexe,
+              data.speciality,
+              data.owner);
+          Navigator.of(context).pop();
+          const snackBar = SnackBar(
+          content: Text('The owner of horse as been edited'),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        },
         child:
         Card(
           elevation: 10,
@@ -370,7 +396,7 @@ class _EditprofileState extends State<Editprofile> {
   }
 
   // Sert a update le proprietaire d'un cheval (marche pas)
-  Future<void> _updateOwner(var id, String name,String image,String color,int age,String race,String sexe,List<String> speciality, var owner) async{
+  Future<void> _updateOwner(var id, String name,String image,String color,int age,String race,String sexe,String speciality, var owner) async{
     final updateData = Horse(id: id, image: image, name: name, age: age, color: color, race: race, sexe: sexe, owner: owner, speciality: speciality);
     await MongoDatabase.updateHorse(updateData);
   }

@@ -23,7 +23,7 @@ class Horse{
     String race;
     String sexe;
     String owner;
-    List<String> speciality;
+    String speciality;
 
   factory Horse.fromJson(Map<String, dynamic> json) => Horse(
     id: json["_id"],
@@ -34,7 +34,7 @@ class Horse{
     race: json["race"],
     sexe: json["sexe"],
     owner: json["owner"],
-    speciality: List<String>.from(json["speciality"].map((x) => x)),
+    speciality: json["speciality"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -46,7 +46,7 @@ class Horse{
     "race": race,
     "sexe": sexe,
     "owner": owner,
-    "speciality": List<dynamic>.from(speciality.map((x) => x)),
+    "speciality": speciality,
   };
 }
 
